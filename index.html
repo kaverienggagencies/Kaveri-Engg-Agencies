@@ -222,9 +222,20 @@
     .product-photo-card:hover { transform:translateY(-5px); box-shadow:0 18px 42px rgba(15,23,42,.13); }
     .product-photo-btn { width:100%; border:0; cursor:pointer; background:linear-gradient(180deg,#fff,#eef6ff); padding:18px; display:block; }
     .product-rotate-stage { height:310px; display:flex; align-items:center; justify-content:center; perspective:1100px; transform-style:preserve-3d; overflow:visible; }
-    .product-rotate-img { max-width:100%; max-height:100%; object-fit:contain; border-radius:20px; transform-style:preserve-3d; animation:productSpin360 8s linear infinite; filter:drop-shadow(0 18px 22px rgba(15,23,42,.20)); will-change:transform; }
+    .product-rotate-img { max-width:100%; max-height:100%; object-fit:contain; border-radius:20px; transform-style:preserve-3d; animation:productInOutZoom 3.8s ease-in-out infinite; filter:drop-shadow(0 18px 22px rgba(15,23,42,.20)); will-change:transform; }
     .product-photo-card:hover .product-rotate-img { animation-duration:4.5s; }
-    @keyframes productSpin360 { from { transform:rotateY(0deg); } to { transform:rotateY(360deg); } }
+    
+@keyframes productInOutZoom {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.96;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+ to { transform:rotateY(360deg); } }
     .product-info { padding:18px 20px 20px; }
     .product-info h3 { font-size:17px; line-height:1.25; margin-bottom:6px; }
     .product-click-note { margin-top:8px; color:#2563eb; font-size:13px; font-weight:800; }
@@ -236,7 +247,7 @@
     .product-fullscreen-title span { display:block; margin-top:4px; color:#93c5fd; font-size:15px; font-weight:800; }
     .product-close-btn { border:0; border-radius:16px; background:#ef4444; color:white; padding:11px 16px; cursor:pointer; font-weight:900; }
     .product-fullscreen-image-wrap { min-height:0; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:26px; padding:12px; overflow:hidden; perspective:1400px; }
-    .product-fullscreen-image-wrap img { width:100%; height:100%; object-fit:contain; border-radius:18px; animation:productSpin360 10s linear infinite; will-change:transform; }
+    .product-fullscreen-image-wrap img { width:100%; height:100%; object-fit:contain; border-radius:18px; animation:productInOutZoom 4.2s ease-in-out infinite; will-change:transform; }
     .product-fullscreen-footer { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
     .product-nav-btn { border:1px solid rgba(255,255,255,.25); border-radius:16px; background:rgba(255,255,255,.12); color:white; padding:10px 16px; cursor:pointer; font-weight:900; }
     .product-nav-btn:hover { background:rgba(255,255,255,.22); }
@@ -1359,50 +1370,162 @@ footer .container{
 }
 </style>
 
-<style id="product-mobile-display-fix">
-/* ===== Product Mobile Display Fix ===== */
-.product-showcase-grid {
-  align-items: stretch !important;
-}
-.product-photo-card {
-  min-width: 0 !important;
-}
-.product-photo-btn {
-  overflow: hidden !important;
-}
-.product-rotate-stage {
+<link as="image" href="assets/images/products/three-phase-vertical-submersible-pumpset.jpg" rel="preload"/>
+<link as="image" href="assets/images/products/three-phase-openwell-submersible-monobloc.jpg" rel="preload"/>
+<link as="image" href="assets/images/products/three-phase-slow-speed-monobloc-pumpset.jpg" rel="preload"/>
+<link as="image" href="assets/images/products/centrifugal-jet-monobloc-pumpset.jpg" rel="preload"/>
+
+<style id="product-mobile-final-fix">
+/* ===== FINAL MOBILE PRODUCT IMAGE FIX ===== */
+.product-showcase {
   overflow: visible !important;
 }
+.product-showcase-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 22px !important;
+}
+.product-mobile-safe-card,
+.product-photo-card {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+.product-mobile-safe-btn,
+.product-photo-btn {
+  display: block !important;
+  width: 100% !important;
+  border: 0 !important;
+}
+.product-mobile-safe-stage,
+.product-rotate-stage {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 300px !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+  perspective: none !important;
+  transform-style: flat !important;
+}
+.product-mobile-safe-img,
 .product-rotate-img {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
+  width: auto !important;
+  height: auto !important;
   max-width: 100% !important;
   max-height: 100% !important;
   object-fit: contain !important;
+  transform: none !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
 }
+
+/* Desktop keeps a light premium motion */
+@media (min-width: 769px) {
+  .product-mobile-safe-img {
+    animation: productDesktopSoftSpin 9s linear infinite !important;
+  }
+}
+
+/* Mobile: make products 100% visible and remove heavy animations */
 @media (max-width: 768px) {
   .product-showcase-grid {
     grid-template-columns: 1fr !important;
     gap: 18px !important;
   }
-  .product-photo-btn {
-    padding: 12px !important;
+  .product-mobile-safe-card,
+  .product-photo-card,
+  .product-mobile-safe-card:hover,
+  .product-photo-card:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
   }
+  .product-mobile-safe-stage,
   .product-rotate-stage {
-    height: 260px !important;
+    height: 250px !important;
+    padding: 10px !important;
   }
+  .product-mobile-safe-img,
   .product-rotate-img {
-    animation-duration: 10s !important;
+    animation: productMobileSimplePulse 4.5s ease-in-out infinite !important;
+    transform: none !important;
+    filter: drop-shadow(0 8px 12px rgba(15,23,42,.14)) !important;
   }
   .product-info h3 {
     font-size: 16px !important;
+    line-height: 1.25 !important;
   }
 }
+
 @media (max-width: 420px) {
+  .product-mobile-safe-stage,
   .product-rotate-stage {
-    height: 230px !important;
+    height: 220px !important;
   }
+}
+
+
+@keyframes productDesktopSoftSpin {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.96;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes productMobileSimplePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.96;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+  50% { transform: scale(1.025); }
+}
+</style>
+
+<link rel="preload" as="image" href="./assets/images/products/product-01-svs.jpg">
+<link rel="preload" as="image" href="./assets/images/products/product-02-svsm.jpg">
+<link rel="preload" as="image" href="./assets/images/products/product-03-sms.jpg">
+<link rel="preload" as="image" href="./assets/images/products/product-04-ssj.jpg">
+<link rel="preload" as="image" href="./assets/images/products/product-05-smcs.jpg">
+<link rel="preload" as="image" href="./assets/images/products/product-06-induction-motor.jpg">
+
+<style id="product-animation-replacement-fix">
+/* ===== Product Animation Replacement: In-Out + Zoom-In Zoom-Out ===== */
+.product-rotate-img,
+.product-mobile-safe-img {
+  animation: productInOutZoom 3.8s ease-in-out infinite !important;
+  transform-origin: center center !important;
+}
+
+.product-fullscreen-image-wrap img,
+#productFullscreenImg {
+  animation: productInOutZoom 4.2s ease-in-out infinite !important;
+  transform-origin: center center !important;
+}
+
+.product-photo-card:hover .product-rotate-img,
+.product-photo-card:hover .product-mobile-safe-img {
+  animation-duration: 2.8s !important;
 }
 </style>
 
@@ -1504,200 +1627,7 @@ footer .container{
             Every product photo rotates in a 360° loop. Click any photo to view it in full screen without crop or cutting.
           </p>
 </div>
-<div class="product-showcase-grid">
-<div class="product-photo-card reveal-item" style="--stagger:0;">
-<button aria-label="Open Three Phase Vertical Submersible Pumpset SVS full screen" class="product-photo-btn" onclick="openProductLightbox(0)" type="button">
-<div class="product-rotate-stage">
-<img alt="Three Phase Vertical Submersible Pumpset - SVS" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-004-2bc5cc22.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Three Phase Vertical Submersible Pumpset</h3>
-<p class="muted">Model: SVS</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:1;">
-<button aria-label="Open Three Phase Vertical Openwell Submersible Monobloc SVSM full screen" class="product-photo-btn" onclick="openProductLightbox(1)" type="button">
-<div class="product-rotate-stage">
-<img alt="Three Phase Vertical Openwell Submersible Monobloc - SVSM" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-005-22951b61.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Three Phase Vertical Openwell Submersible Monobloc</h3>
-<p class="muted">Model: SVSM</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:2;">
-<button aria-label="Open Three Phase Slow Speed Monobloc Pumpset SMS full screen" class="product-photo-btn" onclick="openProductLightbox(2)" type="button">
-<div class="product-rotate-stage">
-<img alt="Three Phase Slow Speed Monobloc Pumpset - SMS" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-006-62eb6e31.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Three Phase Slow Speed Monobloc Pumpset</h3>
-<p class="muted">Model: SMS</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:3;">
-<button aria-label="Open Centrifugal Jet Monobloc Pumpset SSJ full screen" class="product-photo-btn" onclick="openProductLightbox(3)" type="button">
-<div class="product-rotate-stage">
-<img alt="Centrifugal Jet Monobloc Pumpset - SSJ" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-007-b47b608f.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Centrifugal Jet Monobloc Pumpset</h3>
-<p class="muted">Model: SSJ</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:4;">
-<button aria-label="Open Borewell Mono Compressor Pumpset SMCS full screen" class="product-photo-btn" onclick="openProductLightbox(4)" type="button">
-<div class="product-rotate-stage">
-<img alt="Borewell Mono Compressor Pumpset - SMCS" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-008-e48b1085.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Borewell Mono Compressor Pumpset</h3>
-<p class="muted">Model: SMCS</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:5;">
-<button aria-label="Open Induction Motor Induction Motor full screen" class="product-photo-btn" onclick="openProductLightbox(5)" type="button">
-<div class="product-rotate-stage">
-<img alt="Induction Motor - Induction Motor" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-009-7a0a3928.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Induction Motor</h3>
-<p class="muted">Model: Induction Motor</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:6;">
-<button aria-label="Open Induction Aerator Motor Aerator Motor full screen" class="product-photo-btn" onclick="openProductLightbox(6)" type="button">
-<div class="product-rotate-stage">
-<img alt="Induction Aerator Motor - Aerator Motor" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-010-67727a7c.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Induction Aerator Motor</h3>
-<p class="muted">Model: Aerator Motor</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:7;">
-<button aria-label="Open Mini Pressure Boosting System SMPBS full screen" class="product-photo-btn" onclick="openProductLightbox(7)" type="button">
-<div class="product-rotate-stage">
-<img alt="Mini Pressure Boosting System - SMPBS" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-011-5d67ec90.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Mini Pressure Boosting System</h3>
-<p class="muted">Model: SMPBS</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:0;">
-<button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset ORCA full screen" class="product-photo-btn" onclick="openProductLightbox(8)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - ORCA" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-012-0eb76e9a.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3>
-<p class="muted">Model: ORCA</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:1;">
-<button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset MARLIN full screen" class="product-photo-btn" onclick="openProductLightbox(9)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - MARLIN" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-013-90779e3a.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3>
-<p class="muted">Model: MARLIN</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:2;">
-<button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset NEMO full screen" class="product-photo-btn" onclick="openProductLightbox(10)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - NEMO" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-014-450c0876.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3>
-<p class="muted">Model: NEMO</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:3;">
-<button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset DOLPHIN full screen" class="product-photo-btn" onclick="openProductLightbox(11)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - DOLPHIN" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-015-daf3af46.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3>
-<p class="muted">Model: DOLPHIN</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:4;">
-<button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset SSSM CI Body full screen" class="product-photo-btn" onclick="openProductLightbox(12)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - SSSM CI Body" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-016-cc49efdd.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3>
-<p class="muted">Model: SSSM CI Body</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:5;">
-<button aria-label="Open Single Phase High Speed Centrifugal Monobloc Pumpset SCS / SCM full screen" class="product-photo-btn" onclick="openProductLightbox(13)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Centrifugal Monobloc Pumpset - SCS / SCM" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-017-6ce3524f.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Centrifugal Monobloc Pumpset</h3>
-<p class="muted">Model: SCS / SCM</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:6;">
-<button aria-label="Open Single Phase Self Priming High Speed Monobloc Pumpset SRH full screen" class="product-photo-btn" onclick="openProductLightbox(14)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase Self Priming High Speed Monobloc Pumpset - SRH" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-018-3d29c477.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase Self Priming High Speed Monobloc Pumpset</h3>
-<p class="muted">Model: SRH</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-<div class="product-photo-card reveal-item" style="--stagger:7;">
-<button aria-label="Open Single Phase High Speed Self Priming Pumpsets Power Series full screen" class="product-photo-btn" onclick="openProductLightbox(15)" type="button">
-<div class="product-rotate-stage">
-<img alt="Single Phase High Speed Self Priming Pumpsets - Power Series" class="product-rotate-img" decoding="async" loading="lazy" src="assets/images/image-019-225c8950.jpg"/>
-</div>
-</button>
-<div class="product-info">
-<h3>Single Phase High Speed Self Priming Pumpsets</h3>
-<p class="muted">Model: Power Series</p>
-<p class="product-click-note">Click photo to view full screen</p>
-</div>
-</div>
-</div>
+<div class="product-showcase-grid"><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Three Phase Vertical Submersible Pumpset SVS full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(0)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Three Phase Vertical Submersible Pumpset - SVS" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-01-svs.jpg" decoding="async" loading="eager" src="./assets/images/products/product-01-svs.jpg"/></div></button><div class="product-info"><h3>Three Phase Vertical Submersible Pumpset</h3><p class="muted">Model: SVS</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Three Phase Vertical Openwell Submersible Monobloc SVSM full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(1)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Three Phase Vertical Openwell Submersible Monobloc - SVSM" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-02-svsm.jpg" decoding="async" loading="eager" src="./assets/images/products/product-02-svsm.jpg"/></div></button><div class="product-info"><h3>Three Phase Vertical Openwell Submersible Monobloc</h3><p class="muted">Model: SVSM</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Three Phase Slow Speed Monobloc Pumpset SMS full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(2)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Three Phase Slow Speed Monobloc Pumpset - SMS" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-03-sms.jpg" decoding="async" loading="eager" src="./assets/images/products/product-03-sms.jpg"/></div></button><div class="product-info"><h3>Three Phase Slow Speed Monobloc Pumpset</h3><p class="muted">Model: SMS</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Centrifugal Jet Monobloc Pumpset SSJ full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(3)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Centrifugal Jet Monobloc Pumpset - SSJ" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-04-ssj.jpg" decoding="async" loading="eager" src="./assets/images/products/product-04-ssj.jpg"/></div></button><div class="product-info"><h3>Centrifugal Jet Monobloc Pumpset</h3><p class="muted">Model: SSJ</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Borewell Mono Compressor Pumpset SMCS full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(4)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Borewell Mono Compressor Pumpset - SMCS" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-05-smcs.jpg" decoding="async" loading="eager" src="./assets/images/products/product-05-smcs.jpg"/></div></button><div class="product-info"><h3>Borewell Mono Compressor Pumpset</h3><p class="muted">Model: SMCS</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Induction Motor Induction Motor full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(5)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Induction Motor - Induction Motor" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-06-induction-motor.jpg" decoding="async" loading="eager" src="./assets/images/products/product-06-induction-motor.jpg"/></div></button><div class="product-info"><h3>Induction Motor</h3><p class="muted">Model: Induction Motor</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Induction Aerator Motor Aerator Motor full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(6)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Induction Aerator Motor - Aerator Motor" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-07-aerator-motor.jpg" decoding="async" loading="eager" src="./assets/images/products/product-07-aerator-motor.jpg"/></div></button><div class="product-info"><h3>Induction Aerator Motor</h3><p class="muted">Model: Aerator Motor</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Mini Pressure Boosting System SMPBS full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(7)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Mini Pressure Boosting System - SMPBS" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-08-smpbs.jpg" decoding="async" loading="eager" src="./assets/images/products/product-08-smpbs.jpg"/></div></button><div class="product-info"><h3>Mini Pressure Boosting System</h3><p class="muted">Model: SMPBS</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset ORCA full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(8)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - ORCA" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-09-orca.jpg" decoding="async" loading="eager" src="./assets/images/products/product-09-orca.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3><p class="muted">Model: ORCA</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset MARLIN full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(9)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - MARLIN" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-10-marlin.jpg" decoding="async" loading="eager" src="./assets/images/products/product-10-marlin.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3><p class="muted">Model: MARLIN</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset NEMO full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(10)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - NEMO" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-11-nemo.jpg" decoding="async" loading="eager" src="./assets/images/products/product-11-nemo.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3><p class="muted">Model: NEMO</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset DOLPHIN full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(11)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - DOLPHIN" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-12-dolphin.jpg" decoding="async" loading="eager" src="./assets/images/products/product-12-dolphin.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3><p class="muted">Model: DOLPHIN</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Openwell Submersible Monobloc Pumpset SSSM CI Body full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(12)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Openwell Submersible Monobloc Pumpset - SSSM CI Body" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-13-sssm-ci-body.jpg" decoding="async" loading="eager" src="./assets/images/products/product-13-sssm-ci-body.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Openwell Submersible Monobloc Pumpset</h3><p class="muted">Model: SSSM CI Body</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Centrifugal Monobloc Pumpset SCS / SCM full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(13)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Centrifugal Monobloc Pumpset - SCS / SCM" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-14-scs-scm.jpg" decoding="async" loading="eager" src="./assets/images/products/product-14-scs-scm.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Centrifugal Monobloc Pumpset</h3><p class="muted">Model: SCS / SCM</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase Self Priming High Speed Monobloc Pumpset SRH full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(14)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase Self Priming High Speed Monobloc Pumpset - SRH" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-15-srh.jpg" decoding="async" loading="eager" src="./assets/images/products/product-15-srh.jpg"/></div></button><div class="product-info"><h3>Single Phase Self Priming High Speed Monobloc Pumpset</h3><p class="muted">Model: SRH</p><p class="product-click-note">Tap photo to view full screen</p></div></article><article class="product-photo-card product-mobile-safe-card"><button aria-label="Open Single Phase High Speed Self Priming Pumpsets Power Series full screen" class="product-photo-btn product-mobile-safe-btn" onclick="openProductLightbox(15)" type="button"><div class="product-rotate-stage product-mobile-safe-stage"><img alt="Single Phase High Speed Self Priming Pumpsets - Power Series" class="product-rotate-img product-mobile-safe-img" data-src="./assets/images/products/product-16-power-series.jpg" decoding="async" loading="eager" src="./assets/images/products/product-16-power-series.jpg"/></div></button><div class="product-info"><h3>Single Phase High Speed Self Priming Pumpsets</h3><p class="muted">Model: Power Series</p><p class="product-click-note">Tap photo to view full screen</p></div></article></div>
 </div>
 </section>
 <div aria-label="Product photo full screen viewer" aria-modal="true" class="product-fullscreen" id="productFullscreen" role="dialog">
@@ -1950,7 +1880,7 @@ footer .container{
 </div>
 </footer>
 <script>
-      const kaveriProductPhotos = [{src:'assets/images/image-004-2bc5cc22.jpg',title:'Three Phase Vertical Submersible Pumpset',model:'SVS'},{src:'assets/images/image-005-22951b61.jpg',title:'Three Phase Vertical Openwell Submersible Monobloc',model:'SVSM'},{src:'assets/images/image-006-62eb6e31.jpg',title:'Three Phase Slow Speed Monobloc Pumpset',model:'SMS'},{src:'assets/images/image-007-b47b608f.jpg',title:'Centrifugal Jet Monobloc Pumpset',model:'SSJ'},{src:'assets/images/image-008-e48b1085.jpg',title:'Borewell Mono Compressor Pumpset',model:'SMCS'},{src:'assets/images/image-009-7a0a3928.jpg',title:'Induction Motor',model:'Induction Motor'},{src:'assets/images/image-010-67727a7c.jpg',title:'Induction Aerator Motor',model:'Aerator Motor'},{src:'assets/images/image-011-5d67ec90.jpg',title:'Mini Pressure Boosting System',model:'SMPBS'},{src:'assets/images/image-012-0eb76e9a.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'ORCA'},{src:'assets/images/image-013-90779e3a.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'MARLIN'},{src:'assets/images/image-014-450c0876.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'NEMO'},{src:'assets/images/image-015-daf3af46.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'DOLPHIN'},{src:'assets/images/image-016-cc49efdd.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'SSSM CI Body'},{src:'assets/images/image-017-6ce3524f.jpg',title:'Single Phase High Speed Centrifugal Monobloc Pumpset',model:'SCS / SCM'},{src:'assets/images/image-018-3d29c477.jpg',title:'Single Phase Self Priming High Speed Monobloc Pumpset',model:'SRH'},{src:'assets/images/image-019-225c8950.jpg',title:'Single Phase High Speed Self Priming Pumpsets',model:'Power Series'}];
+      const kaveriProductPhotos = [{src:'./assets/images/products/product-01-svs.jpg',title:'Three Phase Vertical Submersible Pumpset',model:'SVS'},{src:'./assets/images/products/product-02-svsm.jpg',title:'Three Phase Vertical Openwell Submersible Monobloc',model:'SVSM'},{src:'./assets/images/products/product-03-sms.jpg',title:'Three Phase Slow Speed Monobloc Pumpset',model:'SMS'},{src:'./assets/images/products/product-04-ssj.jpg',title:'Centrifugal Jet Monobloc Pumpset',model:'SSJ'},{src:'./assets/images/products/product-05-smcs.jpg',title:'Borewell Mono Compressor Pumpset',model:'SMCS'},{src:'./assets/images/products/product-06-induction-motor.jpg',title:'Induction Motor',model:'Induction Motor'},{src:'./assets/images/products/product-07-aerator-motor.jpg',title:'Induction Aerator Motor',model:'Aerator Motor'},{src:'./assets/images/products/product-08-smpbs.jpg',title:'Mini Pressure Boosting System',model:'SMPBS'},{src:'./assets/images/products/product-09-orca.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'ORCA'},{src:'./assets/images/products/product-10-marlin.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'MARLIN'},{src:'./assets/images/products/product-11-nemo.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'NEMO'},{src:'./assets/images/products/product-12-dolphin.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'DOLPHIN'},{src:'./assets/images/products/product-13-sssm-ci-body.jpg',title:'Single Phase High Speed Openwell Submersible Monobloc Pumpset',model:'SSSM CI Body'},{src:'./assets/images/products/product-14-scs-scm.jpg',title:'Single Phase High Speed Centrifugal Monobloc Pumpset',model:'SCS / SCM'},{src:'./assets/images/products/product-15-srh.jpg',title:'Single Phase Self Priming High Speed Monobloc Pumpset',model:'SRH'},{src:'./assets/images/products/product-16-power-series.jpg',title:'Single Phase High Speed Self Priming Pumpsets',model:'Power Series'}];
       let currentProductIndex = 0;
       function openProductLightbox(index) {
         currentProductIndex = Number(index) || 0;
@@ -2296,5 +2226,38 @@ footer .container{
   }
 })();
 </script>
+
+<script id="product-mobile-load-fallback">
+(function(){
+  function ensureProductImagesLoad(){
+    var imgs = document.querySelectorAll('.product-mobile-safe-img, .product-rotate-img');
+    imgs.forEach(function(img){
+      var src = img.getAttribute('data-src') || img.getAttribute('src');
+      if(!src) return;
+      img.style.display = 'block';
+      img.style.opacity = '1';
+      img.style.visibility = 'visible';
+      if(!img.getAttribute('src')) {
+        img.setAttribute('src', src);
+      }
+      img.onerror = function(){
+        // Retry once with cache-busting only if the browser failed the first load.
+        if(img.dataset.retryDone === 'yes') return;
+        img.dataset.retryDone = 'yes';
+        img.src = src + (src.indexOf('?') === -1 ? '?v=2' : '&v=2');
+      };
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', ensureProductImagesLoad);
+  } else {
+    ensureProductImagesLoad();
+  }
+  window.addEventListener('load', ensureProductImagesLoad);
+  setTimeout(ensureProductImagesLoad, 1200);
+})();
+</script>
+
 </body>
 </html>
